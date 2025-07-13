@@ -1,57 +1,61 @@
 #!/bin/bash
 
 # Update system
-sudo pacman -Syu --noconfirm
+sudo pacman -Syyu --noconfirm
 
-# Packages to uninstall
+# Install Gnome Desktop Environment
 
-UNINSTALL_PACKAGE=(
-  baobab
-  epiphany
-  evince
-  gnome-calendar
-  gnome-clocks
-  gnome-connections
-  gnome-console
-  gnome-contacts
-  gnome-logs
-  gnome-maps
-  gnome-music
-  gnome-remote-desktop
-  gnome-shell-extensions
-  gnome-software
-  gnome-system-monitor
-  gnome-tour
-  gnome-user-docs
-  showtime
-  simple-scan
-  snapshot
-  totem
-  yelp
-)
+sudo pacman -Syu --noconfirm gnome-shell gdm gnome-control-center gnome-backgrounds ptyxis nvidia-open
 
-for package in "${UNINSTALL_PACKAGE[@]}"; do
-  sudo pacman -Rns --noconfirm "$package"
-done
+# Enable autostart of gdm
+
+sudo systemctl enable gdm.service
+
+# Apply nvidia hook for updates
+
+sudo mkdir -p /etc/pacman.d/hooks/
+
+sudo tee /etc/pacman.d/hooks/nvidia.hook > /dev/null <<EOF
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+# You can remove package(s) that don't apply to your config, e.g. if you only use nvidia-open you can remove nvidia-lts as a Target
+Target=nvidia
+Target=nvidia-open
+Target=nvidia-lts
+# If running a different kernel, modify below to match
+Target=linux
+
+[Action]
+Description=Updating NVIDIA module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOF
 
 # Packages to install
 
 INSTALL_PACKAGE=(
-  ptyxis
-  gnome-browser-connector
-  resources
-  gnome-tweaks
-  dconf-editor
-  obs-studio
-  mpv
-  inkscape
   chromium
-  steam
-  git
-  ttf-jetbrains-mono
-  ttf-jetbrains-mono-nerd
+  dconf-editor
+  decibels
   eyedropper
+  fastfetch
+  gnome-browser-connector
+  gnome-calculator
+  gnome-characters
+  gnome-disk-utility
+  gnome-font-viewer
+  gnome-tweaks
+  inkscape
+  loupe
+  mpv
   npm
+  resources
+  ttf-jetbrains-mono
   ttf-opensans
 )
 
@@ -84,6 +88,70 @@ gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ptyxis
 gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
 
 #Set gdm monitor config
+
+sudo tee "$HOME/.config/monitors.xml" > /dev/null <<EOF
+<monitors version="2">
+  <configuration>
+    <layoutmode>physical</layoutmode>
+    <logicalmonitor>
+      <x>3840</x>
+      <y>0</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-1</connector>
+          <vendor>MSI</vendor>
+          <product>MSI MP225</product>
+          <serial>PC6M075103937</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>100.000</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>1920</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>MSI</vendor>
+          <product>MSI MAG241CR</product>
+          <serial>0x00000054</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>143.855</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>DP-2</connector>
+          <vendor>XMI</vendor>
+          <product>Redmi 215 NF</product>
+          <serial>4241712Z9111D</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>60.000</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+</monitors>
+EOF
+
 sudo cp "$HOME/.config/monitors.xml" /var/lib/gdm/.config/
 
 #Set up git
