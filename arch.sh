@@ -65,14 +65,15 @@ done
 
 # Install yay
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+cd .. && rm -rf yay
 
 INSTALL_PACKAGE_AUR=(
-  visual-studio-code-bin
   brave-bin
-  protonplus
   libre-menu-editor
-  nautilus-open-any-terminal
   nautilus-code
+  nautilus-open-any-terminal
+  protonplus
+  visual-studio-code-bin
 )
 
 for package in "${INSTALL_PACKAGE_AUR[@]}"; do
@@ -152,6 +153,8 @@ sudo tee "$HOME/.config/monitors.xml" > /dev/null <<EOF
 </monitors>
 EOF
 
+sudo mkdir -p /var/lib/gdm/.config
+
 sudo cp "$HOME/.config/monitors.xml" /var/lib/gdm/.config/
 
 #Set up git
@@ -179,11 +182,11 @@ EOF
 
 #install ms fonts
 
-cd ~/Downloads/
+mkdir -p ~/Downloads && cd ~/Downloads
 
 git clone https://github.com/sefaron/ms-fonts.git
 
-sudo mkdir /usr/local/share/fonts
+sudo mkdir -p /usr/local/share/fonts
 
 sudo mv ms-fonts /usr/local/share/fonts
 
