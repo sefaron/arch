@@ -165,18 +165,22 @@ git config --global user.email "33119700+sefaron@users.noreply.github.com"
 sudo mkdir -p /etc/brave/policies/managed/
 sudo tee /etc/brave/policies/managed/GroupPolicy.json > /dev/null <<EOF
 {
-  "RestoreOnStartup": 1,
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
+  "BraveAIChatEnabled": false,
+  "BraveNewsDisabled": 1,
+  "BraveRewardsDisabled": true,
+  "BraveSpeedreaderDisabled": 1,
+  "BraveTalkDisabled": 1,
+  "BraveVPNDisabled": 1,
+  "BraveWalletDisabled": true,
+  "BraveWaybackMachineDisabled": 1,
+  "DnsOverHttpsMode": "automatic",
   "PasswordManagerEnabled": false,
   "PaymentMethodQueryEnabled": false,
-  "AutofillCreditCardEnabled": false,
-  "AutofillAddressEnabled": false,
+  "RestoreOnStartup": 1,
   "ShowHomeButton": true,
-  "BraveRewardsDisabled": true,
-  "BraveWalletDisabled": true,
-  "BraveVPNDisabled": 1,
-  "BraveAIChatEnabled": false,
-  "TorDisabled": true,
-  "DnsOverHttpsMode": "automatic"
+  "TorDisabled": true
 }
 EOF
 
