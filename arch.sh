@@ -44,17 +44,21 @@ INSTALL_PACKAGE=(
   decibels
   eyedropper
   fastfetch
+  gnome-boxes
   gnome-browser-connector
   gnome-calculator
   gnome-characters
   gnome-disk-utility
   gnome-font-viewer
+  gnome-text-editor
   gnome-tweaks
   inkscape
   loupe
   mpv
   npm
+  obs-studio
   resources
+  steam
   ttf-jetbrains-mono
   ttf-opensans
 )
@@ -68,6 +72,7 @@ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/ya
 cd .. && rm -rf yay
 
 INSTALL_PACKAGE_AUR=(
+  bottles
   brave-bin
   libre-menu-editor
   nautilus-code
