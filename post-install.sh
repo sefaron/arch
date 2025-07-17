@@ -78,14 +78,28 @@ git config --global user.email "33119700+sefaron@users.noreply.github.com"
 
 #install ms fonts
 
-mkdir -p ~/Downloads && cd ~/Downloads
+cd ~/Downloads
 
 curl -LO https://github.com/sefaron/ms-fonts/archive/refs/heads/main.zip
 
 unzip main.zip
+
+cd main/
 
 sudo mkdir -p /usr/local/share/fonts
 
 sudo mv ms-fonts-main /usr/local/share/fonts
 
 sudo fc-cache --force
+
+cd .. && rm -rf main.zip
+
+# installing colloid icon pack
+
+cd ~/Downloads
+
+git clone https://github.com/vinceliuice/Colloid-icon-theme.git
+
+cd Colloid-icon-theme
+
+./install.sh

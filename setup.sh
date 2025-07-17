@@ -52,12 +52,18 @@ INSTALL_PACKAGE=(
   gnome-disk-utility
   gnome-font-viewer
   gnome-tweaks
+  gstreamer
+  gst-libav
+  gst-plugins-bad
+  gst-plugins-base
+  gst-plugins-good
+  gst-plugins-ugly
   inkscape
   loupe
-  mpv
   npm
   obs-studio
   resources
+  showtime
   ttf-jetbrains-mono
   ttf-opensans
 )
